@@ -63,9 +63,12 @@ export default class Bin {
   }
 
   weighItem(item: Item): boolean {
-    return (
-      !this.maxWeight || item.weight + this.getPackedWeight() <= this.maxWeight
+    if (!this.maxWeight) return true;
+    const currentWeight = this.items.reduce(
+      (total, item) => total + item.weight,
+      0
     );
+    return currentWeight + item.weight <= this.maxWeight;
   }
 
   /**
