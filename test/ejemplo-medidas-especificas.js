@@ -7,9 +7,7 @@ function mostrarResultadosEmpaquetado(contenedores) {
     console.log(`\nContenedor ${index + 1}: ${bin.name}`);
     console.log("----------------------------------------");
     console.log(
-      `Dimensiones: ${bin.width / 100000}m × ${bin.height / 100000}m × ${
-        bin.depth / 100000
-      }m`
+      `Dimensiones: ${bin.getWidth()}cm × ${bin.getHeight()}cm × ${bin.getDepth()}cm`
     );
     console.log(`Items empaquetados: ${bin.items.length}`);
 
@@ -17,14 +15,14 @@ function mostrarResultadosEmpaquetado(contenedores) {
       console.log("\nDistribución de items:");
       bin.items.forEach((item) => {
         console.log(
-          `- ${item.name} (${item.width / 100000}m × ${
-            item.height / 100000
-          }m × ${item.depth / 100000}m):`
+          `- ${
+            item.name
+          } (${item.getWidth()}cm × ${item.getHeight()}cm × ${item.getDepth()}cm):`
         );
         console.log(
-          `  Posición: [${item.position[0] / 100000}m, ${
-            item.position[1] / 100000
-          }m, ${item.position[2] / 100000}m]`
+          `  Posición: [${item.getPosition()[0]}cm, ${
+            item.getPosition()[1]
+          }cm, ${item.getPosition()[2]}cm]`
         );
       });
     }
@@ -45,7 +43,10 @@ const contenedores = [
 const items = [
   new Item("Item 1", 10, 25, 10), // 10 × 25 × 10
   new Item("Item 2", 40, 20, 40), // 40 × 20 × 40
+  new Item("Item 2A", 40, 20, 40), // 40 × 20 × 40
+  new Item("Item 2B", 40, 20, 40), // 40 × 20 × 40
   new Item("Item 3", 45, 25, 40), // 45 × 25 × 40
+  new Item("Item 3A", 45, 25, 40), // 45 × 25 × 40
   new Item("Item 4", 10, 15, 10), // 10 × 15 × 10
   new Item("Item 5", 40, 15, 40), // 40 × 15 × 40
   new Item("Item 6", 25, 40, 30), // 25 × 40 × 30
@@ -76,9 +77,9 @@ if (packer.unfitItems.length > 0) {
   console.log("\nItems que no se pudieron empaquetar:");
   packer.unfitItems.forEach((item) => {
     console.log(
-      `- ${item.name} (${item.width / 100000}m × ${item.height / 100000}m × ${
-        item.depth / 100000
-      }m)`
+      `- ${
+        item.name
+      } (${item.getWidth()}cm × ${item.getHeight()}cm × ${item.getDepth()}cm)`
     );
   });
 }
@@ -99,21 +100,13 @@ console.log(`Porcentaje empacado: ${porcentajeEmpacado.toFixed(2)}%`);
 // 9. Calcular y mostrar el uso del espacio para cada contenedor
 console.log("\nUso del espacio por contenedor:");
 contenedores.forEach((contenedor, index) => {
-  const volumenContenedor =
-    (contenedor.width / 100000) *
-    (contenedor.height / 100000) *
-    (contenedor.depth / 100000);
-  const volumenEmpacado = contenedor.items.reduce((total, item) => {
-    return (
-      total +
-      (item.width / 100000) * (item.height / 100000) * (item.depth / 100000)
-    );
-  }, 0);
+  const volumenContenedor = contenedor.getVolume();
+  const volumenEmpacado = contenedor.getPackedVolume();
   const porcentajeVolumen = (volumenEmpacado / volumenContenedor) * 100;
 
   console.log(`\nContenedor ${index + 1} (${contenedor.name}):`);
-  console.log(`Volumen del contenedor: ${volumenContenedor.toFixed(2)}m³`);
-  console.log(`Volumen empacado: ${volumenEmpacado.toFixed(2)}m³`);
+  console.log(`Volumen del contenedor: ${volumenContenedor.toFixed(2)}cm³`);
+  console.log(`Volumen empacado: ${volumenEmpacado.toFixed(2)}cm³`);
   console.log(
     `Porcentaje de espacio utilizado: ${porcentajeVolumen.toFixed(2)}%`
   );

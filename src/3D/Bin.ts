@@ -1,4 +1,4 @@
-import { factoredInteger } from "./util";
+import { factoredInteger, unfactorInteger } from "./util";
 import { createLogger } from "../lib/log";
 import Item, { Position, RotationType } from "./Item";
 
@@ -13,7 +13,7 @@ export default class Bin {
 
   items: Item[] = [];
 
-  constructor(name: string, w: number, h: number, d: number, mw: number) {
+  constructor(name: string, w: number, h: number, d: number, mw: number = 0) {
     this.name = name;
     this.width = factoredInteger(w);
     this.height = factoredInteger(h);
@@ -26,19 +26,19 @@ export default class Bin {
   }
 
   getWidth(): number {
-    return this.width;
+    return unfactorInteger(this.width);
   }
 
   getHeight(): number {
-    return this.height;
+    return unfactorInteger(this.height);
   }
 
   getDepth(): number {
-    return this.depth;
+    return unfactorInteger(this.depth);
   }
 
   getMaxWeight(): number {
-    return this.maxWeight;
+    return unfactorInteger(this.maxWeight);
   }
 
   getItems(): Item[] {
@@ -50,12 +50,22 @@ export default class Bin {
   }
 
   getPackedWeight(): number {
-    return this.items.reduce((weight, item) => weight + item.getWeight(), 0);
+    const weight = this.items.reduce((total, item) => total + item.weight, 0);
+    return unfactorInteger(weight);
+  }
+
+  getPackedVolume(): number {
+    let volume = 0;
+    for (const item of this.items) {
+      volume += item.getVolume();
+    }
+    return volume;
   }
 
   weighItem(item: Item): boolean {
-    const maxWeight = this.getMaxWeight();
-    return !maxWeight || item.getWeight() + this.getPackedWeight() <= maxWeight;
+    return (
+      !this.maxWeight || item.weight + this.getPackedWeight() <= this.maxWeight
+    );
   }
 
   /**

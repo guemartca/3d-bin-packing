@@ -23,7 +23,7 @@ export default class Item {
     allowedRotation: RotationType[];
     rotationType: RotationType;
     position: Position;
-    constructor(name: string, w: number, h: number, d: number, wg: number, allowedRotation?: RotationType[]);
+    constructor(name: string, w: number, h: number, d: number, wg?: number, allowedRotation?: RotationType[]);
     getWidth(): number;
     getHeight(): number;
     getDepth(): number;
@@ -32,6 +32,7 @@ export default class Item {
     getAllowedRotation(): RotationType[];
     getRotationTypeString(): string;
     getDimension(): [number, number, number];
+    getPosition(): Position;
     intersect(i2: Item): boolean;
     getVolume(): number;
     toString(): string;

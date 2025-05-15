@@ -6,7 +6,7 @@ export default class Bin {
     depth: number;
     maxWeight: number;
     items: Item[];
-    constructor(name: string, w: number, h: number, d: number, mw: number);
+    constructor(name: string, w: number, h: number, d: number, mw?: number);
     getName(): string;
     getWidth(): number;
     getHeight(): number;
@@ -15,6 +15,7 @@ export default class Bin {
     getItems(): Item[];
     getVolume(): number;
     getPackedWeight(): number;
+    getPackedVolume(): number;
     weighItem(item: Item): boolean;
     /**
      * Calculate a score for a given item and rotation type.

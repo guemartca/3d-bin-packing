@@ -1,4 +1,4 @@
-import { factoredInteger } from "./util";
+import { factoredInteger, unfactorInteger } from "./util";
 
 export const RotationType_WHD = 0;
 export const RotationType_HWD = 1;
@@ -37,14 +37,14 @@ export default class Item {
   allowedRotation: RotationType[] = [0, 1, 2, 3, 4, 5];
 
   rotationType: RotationType = RotationType_WHD;
-  position: Position = [0, 0, 0]; // x, y, z
+  position: Position = [0, 0, 0];
 
   constructor(
     name: string,
     w: number,
     h: number,
     d: number,
-    wg: number,
+    wg: number = 0,
     allowedRotation?: RotationType[]
   ) {
     this.name = name;
@@ -58,19 +58,19 @@ export default class Item {
   }
 
   getWidth(): number {
-    return this.width;
+    return unfactorInteger(this.width);
   }
 
   getHeight(): number {
-    return this.height;
+    return unfactorInteger(this.height);
   }
 
   getDepth(): number {
-    return this.depth;
+    return unfactorInteger(this.depth);
   }
 
   getWeight(): number {
-    return this.weight;
+    return unfactorInteger(this.weight);
   }
 
   getRotationType(): RotationType {
@@ -110,6 +110,14 @@ export default class Item {
     return d;
   }
 
+  getPosition(): Position {
+    return [
+      unfactorInteger(this.position[0]),
+      unfactorInteger(this.position[1]),
+      unfactorInteger(this.position[2]),
+    ];
+  }
+
   intersect(i2: Item): boolean {
     return (
       rectIntersect(this, i2, WidthAxis, HeightAxis) &&
@@ -127,7 +135,7 @@ export default class Item {
       this.name
     } (${this.getRotationTypeString()} = ${this.getDimension().join(
       "x"
-    )}, Wg. = ${this.weight})`;
+    )}, Wg. = ${this.getWeight()})`;
   }
 }
 
