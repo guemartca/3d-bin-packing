@@ -1,14 +1,26 @@
-# binpackingjs
+# 3D Bin Packing JavaScript Library
 
-[![Build Status](https://api.travis-ci.org/olragon/binpackingjs.svg?branch=master)](https://travis-ci.org/olragon/binpackingjs)
-[![npm version](http://img.shields.io/npm/v/binpackingjs.svg?style=flat)](https://npmjs.org/package/binpackingjs "View this project on npm")
-[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+A powerful JavaScript library for solving 3D bin packing problems. This library helps you efficiently pack items of different sizes into containers (bins) while optimizing space usage.
 
-binpackingjs is a 3D JavaScript Bin Packing library.
+## Features
 
-The 3D Bin Packing Code is ported from the golang package [bp3d](https://github.com/gedex/bp3d) which is based on [this paper](https://www.researchgate.net/publication/228974015_Optimizing_Three-Dimensional_Bin_Packing_Through_Simulation).
+- 3D bin packing algorithm implementation
+- Support for multiple bins
+- Customizable bin and item dimensions
+- Space optimization
+- Easy to integrate and use
+- Written in modern JavaScript
+- Fully tested
 
-## Install
+## Installation
+
+Using npm:
+
+```bash
+npm install binpackingjs
+```
+
+Using yarn:
 
 ```bash
 yarn add binpackingjs
@@ -17,34 +29,104 @@ yarn add binpackingjs
 ## Usage
 
 ```javascript
-const BinPacking3D = require("binpackingjs").BP3D;
+import { BP3D } from "binpackingjs";
 
-const { Item, Bin, Packer } = BinPacking3D;
+// Create a new packer
+const packer = new BP3D.Packer();
 
-let bin1 = new Bin("Le petite box", 296, 296, 8, 1000);
-let item1 = new Item("Item 1", 250, 250, 2, 200);
-let item2 = new Item("Item 2", 250, 250, 2, 200);
-let item3 = new Item("Item 3", 250, 250, 2, 200);
-let packer = new Packer();
-
+// Define bins (containers)
+const bin1 = new BP3D.Bin(100, 100, 100, 100); // width, height, depth, maxWeight
 packer.addBin(bin1);
+
+// Add items to be packed
+const item1 = new BP3D.Item(20, 20, 20, 1, "Item 1"); // width, height, depth, weight, name
+const item2 = new BP3D.Item(30, 30, 30, 2, "Item 2");
 packer.addItem(item1);
 packer.addItem(item2);
-packer.addItem(item3);
 
-// pack items into bin1
+// Pack items into bins
 packer.pack();
 
-// item1, item2, item3
-console.log(bin1.items);
+// Get the results
+const bins = packer.bins;
+```
 
-// items will be empty, all items was packed
-console.log(packer.items);
+## API Reference
 
-// unfitItems will be empty, all items fit into bin1
-console.log(packer.unfitItems);
+### Packer
+
+The main class that handles the packing algorithm.
+
+Methods:
+
+- `addBin(bin)`: Add a bin to pack items into
+- `addItem(item)`: Add an item to be packed
+- `pack()`: Execute the packing algorithm
+
+### Bin
+
+Represents a container that items can be packed into.
+
+Properties:
+
+- `width`: Width of the bin
+- `height`: Height of the bin
+- `depth`: Depth of the bin
+- `maxWeight`: Maximum weight capacity
+- `items`: Array of packed items
+
+### Item
+
+Represents an item to be packed.
+
+Properties:
+
+- `width`: Width of the item
+- `height`: Height of the item
+- `depth`: Depth of the item
+- `weight`: Weight of the item
+- `name`: Identifier for the item
+
+## Development
+
+```bash
+# Install dependencies
+yarn install
+
+# Run tests
+yarn test
+
+# Build the project
+yarn build
+
+# Watch mode for development
+yarn dev
+```
+
+## Testing
+
+The project includes comprehensive tests. Run them using:
+
+```bash
+yarn test
 ```
 
 ## License
 
 MIT
+
+## Author
+
+Long Nguyen
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Support
+
+If you have any questions or need help, please open an issue in the GitHub repository.
