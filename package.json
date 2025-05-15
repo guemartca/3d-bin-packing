@@ -1,0 +1,38 @@
+{
+  "name": "binpackingjs",
+  "version": "3.0.2",
+  "description": "3D Bin Packing JavaScript Library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olragon/binpackingjs"
+  },
+  "main": "dist/BinPacking.min.js",
+  "scripts": {
+    "clean": "if exist dist rd /s /q dist && mkdir dist",
+    "build": "yarn clean && webpack && set BUILD_MINIFY=1&& webpack",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && webpack --progress --watch",
+    "test": "mocha --require @babel/register ./test/*.js",
+    "test-dev": "mocha --watch ./test/*.js"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "author": "Long Nguyen",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/plugin-transform-runtime": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/register": "^7.27.1",
+    "@babel/runtime": "^7.27.1",
+    "babel-loader": "^8.2.2",
+    "console.table": "^0.10.0",
+    "mocha": "^8.3.0",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "dependencies": {}
+}
