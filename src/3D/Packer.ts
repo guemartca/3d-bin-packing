@@ -1,28 +1,28 @@
-import Bin from './Bin';
-import {
-  Item,
+import Bin from "./Bin";
+import Item, {
   StartPosition,
   WidthAxis,
   HeightAxis,
-  DepthAxis
-} from './Item';
+  DepthAxis,
+  Axis,
+  Position,
+} from "./Item";
 
 export default class Packer {
+  bins: Bin[] = [];
+  items: Item[] = [];
+  unfitItems: Item[] = [];
 
-  bins = [];
-  items = [];
-  unfitItems = [];
-
-  addBin(bin) {
+  addBin(bin: Bin): void {
     this.bins.push(bin);
   }
 
-  addItem(item) {
+  addItem(item: Item): void {
     this.items.push(item);
   }
 
-  findFittedBin(i) {
-    for (let _i=0; _i<this.bins.length; _i++) {
+  findFittedBin(i: Item): Bin | null {
+    for (let _i = 0; _i < this.bins.length; _i++) {
       let b = this.bins[_i];
 
       if (!b.weighItem(i) || !b.putItem(i, StartPosition)) {
@@ -38,9 +38,9 @@ export default class Packer {
     return null;
   }
 
-  getBiggerBinThan(b) {
+  getBiggerBinThan(b: Bin): Bin | null {
     let v = b.getVolume();
-    for (let _i=0; _i<this.bins; _i++) {
+    for (let _i = 0; _i < this.bins.length; _i++) {
       let b2 = this.bins[_i];
       if (b2.getVolume() > v) {
         return b2;
@@ -49,7 +49,7 @@ export default class Packer {
     return null;
   }
 
-  unfitItem() {
+  unfitItem(): void {
     if (this.items.length === 0) {
       return;
     }
@@ -57,9 +57,9 @@ export default class Packer {
     this.items.splice(0, 1);
   }
 
-  packToBin(b, items) {
-    let b2 = null;
-    let unpacked = [];
+  packToBin(b: Bin, items: Item[]): Item[] {
+    let b2: Bin | null = null;
+    let unpacked: Item[] = [];
     let fit = b.weighItem(items[0]) && b.putItem(items[0], StartPosition);
 
     if (!fit) {
@@ -71,20 +71,19 @@ export default class Packer {
     }
 
     // Pack unpacked items.
-    for (let _i=1; _i < this.items.length; _i++) {
+    for (let _i = 1; _i < this.items.length; _i++) {
       let fitted = false;
       let item = this.items[_i];
 
       if (b.weighItem(item)) {
         // Try available pivots in current bin that are not intersect with
         // existing items in current bin.
-        lookup:
-        for (let _pt=0; _pt < 3; _pt++) {
-          for (let _j=0; _j < b.items.length; _j++) {
-            let pv;
+        lookup: for (let _pt = 0; _pt < 3; _pt++) {
+          for (let _j = 0; _j < b.items.length; _j++) {
+            let pv: Position;
             let ib = b.items[_j];
             let d = ib.getDimension();
-            switch (_pt) {
+            switch (_pt as Axis) {
               case WidthAxis:
                 pv = [ib.position[0] + d[0], ib.position[1], ib.position[2]];
                 break;
@@ -127,7 +126,7 @@ export default class Packer {
     return unpacked;
   }
 
-  pack() {
+  pack(): null {
     // Sort bins smallest to largest.
     this.bins.sort((a, b) => {
       return a.getVolume() - b.getVolume();

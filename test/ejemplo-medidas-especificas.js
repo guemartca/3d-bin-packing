@@ -1,5 +1,5 @@
-const BP3D = require("../dist/BP3D.js");
-const { Item, Bin, Packer } = BP3D;
+const { BP3D } = require("../dist/BinPacking.js");
+const { Bin, Item, Packer } = BP3D;
 
 // Función para mostrar resultados de manera más legible
 function mostrarResultadosEmpaquetado(contenedores) {
