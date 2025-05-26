@@ -10,5 +10,5 @@ export default class Packer {
     getBiggerBinThan(b: Bin): Bin | null;
     unfitItem(): void;
     packToBin(b: Bin, items: Item[]): Item[];
-    pack(): null;
+    pack(distributeItems?: boolean): null;
 }

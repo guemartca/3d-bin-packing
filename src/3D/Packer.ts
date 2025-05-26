@@ -126,7 +126,7 @@ export default class Packer {
     return unpacked;
   }
 
-  pack(): null {
+  pack(distributeItems: boolean = true): null {
     // Sort bins smallest to largest.
     this.bins.sort((a, b) => {
       return a.getVolume() - b.getVolume();
@@ -137,15 +137,92 @@ export default class Packer {
       return b.getVolume() - a.getVolume();
     });
 
-    while (this.items.length > 0) {
-      let bin = this.findFittedBin(this.items[0]);
+    if (distributeItems) {
+      // Original logic: distribute items across bins
+      while (this.items.length > 0) {
+        let bin = this.findFittedBin(this.items[0]);
 
-      if (bin === null) {
-        this.unfitItem();
-        continue;
+        if (bin === null) {
+          this.unfitItem();
+          continue;
+        }
+
+        this.items = this.packToBin(bin, this.items);
       }
+    } else {
+      // New logic: try to fit all items in each bin
+      const originalItems = [...this.items];
 
-      this.items = this.packToBin(bin, this.items);
+      for (const bin of this.bins) {
+        // Reset bin items and unfitted items
+        bin.items = [];
+        bin.unfittedItems = [];
+
+        // Create a Set to track which items have been processed
+        const processedItems = new Set<string>();
+
+        // Try to fit all items in this bin
+        for (const item of originalItems) {
+          // Skip if we've already processed this item
+          if (processedItems.has(item.name)) continue;
+
+          let fitted = false;
+
+          if (bin.weighItem(item)) {
+            // Try to fit item in the bin
+            if (bin.items.length === 0) {
+              // If bin is empty, try to fit at start position
+              fitted = bin.putItem(item, StartPosition);
+            } else {
+              // Try to fit item in available spaces
+              for (let _pt = 0; _pt < 3; _pt++) {
+                for (let _j = 0; _j < bin.items.length; _j++) {
+                  let pv: Position;
+                  let ib = bin.items[_j];
+                  let d = ib.getDimension();
+
+                  switch (_pt as Axis) {
+                    case WidthAxis:
+                      pv = [
+                        ib.position[0] + d[0],
+                        ib.position[1],
+                        ib.position[2],
+                      ];
+                      break;
+                    case HeightAxis:
+                      pv = [
+                        ib.position[0],
+                        ib.position[1] + d[1],
+                        ib.position[2],
+                      ];
+                      break;
+                    case DepthAxis:
+                      pv = [
+                        ib.position[0],
+                        ib.position[1],
+                        ib.position[2] + d[2],
+                      ];
+                      break;
+                  }
+
+                  if (bin.putItem(item, pv)) {
+                    fitted = true;
+                    break;
+                  }
+                }
+                if (fitted) break;
+              }
+            }
+          }
+
+          // Mark this item as processed
+          processedItems.add(item.name);
+
+          if (!fitted) {
+            bin.unfittedItems.push(item);
+          }
+        }
+      }
     }
 
     return null;

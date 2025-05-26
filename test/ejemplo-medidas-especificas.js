@@ -36,27 +36,19 @@ console.log("Demostración de Empaquetamiento 3D (Medidas Específicas)\n");
 
 // 1. Definir contenedores con las medidas especificadas
 const contenedores = [
-  new Bin("Contenedor Pequeño", 35, 20, 20, 50), // 35 × 20 × 20, peso máximo 50kg
-  new Bin("Contenedor Mediano", 50, 45, 50, 80), // 50 × 45 × 50, peso máximo 100kg
-  new Bin("Contenedor Grande", 70, 45, 40, 40), // 70 × 45 × 40, peso máximo 150kg
+  new Bin("Contenedor Pequeño", 35, 20, 20), // 35 × 20 × 20, peso máximo 50kg
+  new Bin("Contenedor Mediano", 50, 45, 50), // 50 × 45 × 50, peso máximo 100kg
+  new Bin("Contenedor Grande", 70, 45, 40), // 70 × 45 × 40, peso máximo 150kg
 ];
 
 // 2. Definir items con las medidas especificadas
 const items = [
-  new Item("Item 1", 10, 25, 10, 5), // 10 × 25 × 10, peso 5kg
-  new Item("Item 2", 40, 20, 40, 15), // 40 × 20 × 40, peso 15kg
-  // new Item("Item 2A", 40, 20, 40), // 40 × 20 × 40
-  // new Item("Item 2B", 40, 20, 40), // 40 × 20 × 40
-  new Item("Item 3", 45, 25, 40, 40), // 45 × 25 × 40, peso 20kg
-  // new Item("Item 3A", 45, 25, 40), // 45 × 25 × 40
-  new Item("Item 4", 10, 15, 10, 40), // 10 × 15 × 10, peso 3kg
-  new Item("Item 5", 40, 15, 40, 12), // 40 × 15 × 40, peso 12kg
-  new Item("Item 6", 25, 40, 30, 18), // 25 × 40 × 30, peso 18kg
-
-  // Agregando duplicados para probar mejor la optimización
-  // new Item("Item 1B", 10, 25, 10), // 10 × 25 × 10
-  // new Item("Item 4B", 10, 15, 10), // 10 × 15 × 10
-  // new Item("Item 6B", 25, 40, 30), // 25 × 40 × 30
+  new Item("Item 1", 10, 25, 10), // 10 × 25 × 10, peso 5kg
+  new Item("Item 2", 40, 20, 40), // 40 × 20 × 40, peso 15kg
+  new Item("Item 3", 45, 25, 40), // 45 × 25 × 40, peso 20kg
+  new Item("Item 4", 10, 15, 10), // 10 × 15 × 10, peso 3kg
+  new Item("Item 5", 40, 15, 40), // 40 × 15 × 40, peso 12kg
+  new Item("Item 6", 25, 40, 30), // 25 × 40 × 30, peso 18kg
 ];
 
 // 3. Crear el empaquetador y agregar los contenedores

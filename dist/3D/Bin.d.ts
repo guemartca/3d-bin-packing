@@ -6,6 +6,7 @@ export default class Bin {
     depth: number;
     maxWeight: number;
     items: Item[];
+    unfittedItems: Item[];
     constructor(name: string, w: number, h: number, d: number, mw?: number);
     getName(): string;
     getWidth(): number;

@@ -12,6 +12,7 @@ export default class Bin {
   maxWeight: number = 0;
 
   items: Item[] = [];
+  unfittedItems: Item[] = [];
 
   constructor(name: string, w: number, h: number, d: number, mw: number = 0) {
     this.name = name;
